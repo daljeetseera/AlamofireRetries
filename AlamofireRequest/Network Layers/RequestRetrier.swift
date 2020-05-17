@@ -15,6 +15,8 @@ enum NetworkErrorCode: Int {
 
 class NetworkRequestRetrier: RequestRetrier {
     
+    let retry = 3
+    
     // [Request url: Number of times retried]
     private var retriedRequests: [String: Int] = [:]
     
@@ -41,7 +43,7 @@ class NetworkRequestRetrier: RequestRetrier {
                 return
             }
             
-            if retryCount < Constants.retryCount {
+            if retryCount < retry {
                 retriedRequests[url] = retryCount + 1
                 completion(true, 0.5) // retry after 0.5 second
             } else {
